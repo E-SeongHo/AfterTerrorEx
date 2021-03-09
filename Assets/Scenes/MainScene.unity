@@ -196,7 +196,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 51923935}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.55, y: 0.61, z: 0}
+  m_LocalPosition: {x: -10.88, y: 0.91, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -423,7 +423,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 307284876}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.38, y: 0.47, z: 0}
+  m_LocalPosition: {x: 10.45, y: 1.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -689,7 +689,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 9.635684
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -884,7 +884,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1647905672}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f5e0bde41e898347b1b1cf8e929b5e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 114272054505dcd4cb6de59f61bbff15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   button_red: {fileID: 8258764258911393347, guid: 88e89db3675d3854c90f310ea22eaf8a,
@@ -893,6 +893,9 @@ MonoBehaviour:
     type: 3}
   button_blue: {fileID: 6446078817257142802, guid: 7222c445da55ca144b411667e0097bc4,
     type: 3}
+  rigidbody2d: {fileID: 0}
+  button: {fileID: 0}
+  button_ON: 0
 --- !u!1001 &1821960226
 PrefabInstance:
   m_ObjectHideFlags: 0
