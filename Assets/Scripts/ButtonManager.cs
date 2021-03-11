@@ -9,6 +9,8 @@ public class ButtonManager : MonoBehaviour
     public GameObject button_blue;
     Rigidbody2D rigidbody2d;
     GameObject button;
+    GameObject[] taggedObjects; // 초기화???
+    GameObject target; // 버튼 생성시킬 객체선정 변수
     bool button_ON = false;
     
     // Start is called before the first frame update
@@ -22,26 +24,27 @@ public class ButtonManager : MonoBehaviour
     {
         if(!button_ON) // 현재 프레임에 어떤 오브젝트에도 버튼이 떠있지 않으면
         {
-            if(Input.GetMouseButtonDown(0)) // 오브젝트중 가장 가까운 객체 선정
-            {
-                GiveButton2(); // 해당 오브젝트에 버튼 생성
-            }
+            taggedObjects = GameManager.Instance.MakeArrWithTag("Enemy");
+            target = GameManager.Instance.FindNearestObject(taggedObjects);
+            EnemyController enemyController = target.GetComponent<EnemyController>();
+            GiveButton2(target); // 해당 오브젝트에 버튼 생성
+           
         }
         else // 현재 프레임에 어떤 오브젝트에 버튼이 떠있으면
         {
             if(Input.GetKeyDown(KeyCode.A))
             {
-                DeleteButton('A');
+                DeleteButton(target, 'A');
                 Debug.Log("A");
             } 
             if(Input.GetKeyDown(KeyCode.S))
             {
-                DeleteButton('S');
+                DeleteButton(target, 'S');
                 Debug.Log("S");
             }
             if(Input.GetKeyDown(KeyCode.D))
             {
-                DeleteButton('D');
+                DeleteButton(target, 'D');
                 Debug.Log("D");
             }  
         }
@@ -55,20 +58,23 @@ public class ButtonManager : MonoBehaviour
         Quaternion.identity);
         button_ON = true;
     } 
-    void GiveButton2()
+    void GiveButton2(GameObject target)
     {
-        GameObject who = GameObject.Find("Enemy");
         button = button_red;
-        EnemyController enemyController = who.GetComponent<EnemyController>();
+        EnemyController enemyController = target.GetComponent<EnemyController>();
         enemyController.GenerateButton(button,'r');
         button_ON = true;
     }
-    void DeleteButton(char button)
+    void DeleteButton(GameObject target, char button)
     {
-        GameObject who = GameObject.Find("Enemy");
-        EnemyController enemyController = who.GetComponent<EnemyController>();
+        EnemyController enemyController = target.GetComponent<EnemyController>();
         // TryDelete : Delete 성공시 true 반환하므로 Delete 성공 시 button_ON = false로 설정
-        button_ON = !(enemyController.TryDelete(button));
+        bool success = enemyController.TryDelete(button);
+        if(success)
+        {
+            button_ON = false;
+            enemyController.ChangeHealth(-1);
+        }
     }
 
 

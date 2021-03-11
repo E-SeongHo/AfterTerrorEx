@@ -5,6 +5,16 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     public float speed = 1f;
+    public int maxHealth = 5;
+    int currentHealth;
+    public int health
+    {
+        get
+        {
+            return currentHealth;
+        }
+    }
+
     // 버튼 생성이 Enemy객체에 필요하면 myButton 오브젝트에 할당
     // Enemy의 자식객체로 구현하여 Enemy객체와 같이 움직이도록 구현
     GameObject myButton; 
@@ -20,14 +30,17 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        currentHealth = maxHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
         transform.Translate(-1*speed*Time.deltaTime,0,0);
-
+        if(currentHealth == 0)
+        {
+            Destroy(gameObject);
+        }
     }
     static char ConvertColorToKey(char color)
     {   
@@ -66,4 +79,14 @@ public class EnemyController : MonoBehaviour
         }
         else return false; // 올바르지 않은 키 입력이면 fasle 반환
     }
+    public void ChangeHealth(int amount)
+    {
+        if (amount < 0)
+        {
+            // animator 처리 부분 (After Time)
+        }
+        // Clamp 메소드 이용, 최대값이 maxHealth넘지 못하게 구현 
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+        Debug.Log(currentHealth + " / " + maxHealth);
+    } 
 }
