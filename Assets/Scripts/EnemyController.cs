@@ -13,12 +13,8 @@ public class EnemyController : MonoBehaviour
         {
             return currentHealth;
         }
-    }
-
-    // 버튼 생성이 Enemy객체에 필요하면 myButton 오브젝트에 할당
-    // Enemy의 자식객체로 구현하여 Enemy객체와 같이 움직이도록 구현
-    GameObject myButton; 
-
+    } 
+    GameObject myButton = null;
     char myColor;
 
     //THIS OBJECT'S KEY
@@ -37,7 +33,7 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         transform.Translate(-1*speed*Time.deltaTime,0,0);
-        if(currentHealth == 0)
+        if(currentHealth <= 0)
         {
             Destroy(gameObject);
         }
@@ -59,7 +55,10 @@ public class EnemyController : MonoBehaviour
     public void GenerateButton(GameObject button, char color)
     {
         Vector2 position = GetComponent<Rigidbody2D>().position;
-        myButton = Instantiate(button, position + Vector2.up * 1.5f, Quaternion.identity);
+        // 버튼 생성이 Enemy객체에 필요하면 myButton 오브젝트에 할당
+        // Enemy의 자식객체로 구현하여 Enemy객체와 같이 움직이도록 구현
+        GameObject newButton = Instantiate(button, position + Vector2.up * 1.5f, Quaternion.identity);
+        myButton = newButton;
         myButton.transform.parent = gameObject.transform;
         myColor = color;    // 버튼의 색상 저장 -> Delete에 이용
 
@@ -70,9 +69,8 @@ public class EnemyController : MonoBehaviour
         if (colorKey == ConvertColorToKey(myColor))
         {
             //올바른 키 입력이면 Delete 허용
-
             //myButton = null;
-            Destroy(myButton); // Destory보다는 null로 처리하고 안보이게 하는게 좋을듯
+            Destroy(myButton); // Destory보다는 null로 처리하고 안보이게 하는게 좋을듯?
 
             //버튼이 삭제 되었으면 true 반환
             return true;

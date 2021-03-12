@@ -9,7 +9,7 @@ public class ButtonManager : MonoBehaviour
     public GameObject button_blue;
     Rigidbody2D rigidbody2d;
     GameObject button;
-    GameObject[] taggedObjects; // 초기화???
+    List<GameObject> taggedObjects = new List<GameObject>(); // 초기화???
     GameObject target; // 버튼 생성시킬 객체선정 변수
     bool button_ON = false;
     
@@ -23,30 +23,36 @@ public class ButtonManager : MonoBehaviour
     void Update()
     {
         if(!button_ON) // 현재 프레임에 어떤 오브젝트에도 버튼이 떠있지 않으면
-        {
-            taggedObjects = GameManager.Instance.MakeArrWithTag("Enemy");
-            target = GameManager.Instance.FindNearestObject(taggedObjects);
-            EnemyController enemyController = target.GetComponent<EnemyController>();
-            GiveButton2(target); // 해당 오브젝트에 버튼 생성
-           
+        {   
+            GameObject[] tagged = GameManager.Instance.MakeArrWithTag("Enemy");
+            for(int i = 0; i < tagged.Length; i++)
+            {
+                taggedObjects.Add(tagged[i]);
+            }
+            target = GameManager.Instance.FindNearestObject(taggedObjects);           
+            Debug.Log(target);
+            GiveButton2(target); // 해당 오브젝트에 버튼 생성                      
         }
         else // 현재 프레임에 어떤 오브젝트에 버튼이 떠있으면
         {
             if(Input.GetKeyDown(KeyCode.A))
             {
                 DeleteButton(target, 'A');
-                Debug.Log("A");
             } 
             if(Input.GetKeyDown(KeyCode.S))
             {
                 DeleteButton(target, 'S');
-                Debug.Log("S");
             }
             if(Input.GetKeyDown(KeyCode.D))
             {
                 DeleteButton(target, 'D');
-                Debug.Log("D");
-            }  
+            }
+        }
+        EnemyController enemyController = target.GetComponent<EnemyController>();
+        if(enemyController.health <= 0)
+        {
+            taggedObjects.Remove(target);
+            Debug.Log("suc");
         }
     }
     void GiveButton1()
@@ -60,9 +66,25 @@ public class ButtonManager : MonoBehaviour
     } 
     void GiveButton2(GameObject target)
     {
-        button = button_red;
+        int random = Random.Range(0,3);
+        char color = 'r';
+        switch(random)
+        {
+            case 0 :
+                button = button_red;
+                color = 'r';
+                break;
+            case 1 :
+                button = button_green;
+                color = 'g';
+                break;
+            case 2 :
+                button = button_blue;
+                color = 'b';
+                break;
+        }
         EnemyController enemyController = target.GetComponent<EnemyController>();
-        enemyController.GenerateButton(button,'r');
+        enemyController.GenerateButton(button, color);
         button_ON = true;
     }
     void DeleteButton(GameObject target, char button)
