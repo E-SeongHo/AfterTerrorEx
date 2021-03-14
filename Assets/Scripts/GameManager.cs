@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         GameObject[] tagged = GameObject.FindGameObjectsWithTag(tag);
         return tagged;
     }
-    public GameObject FindNearestObject(List<GameObject> tagged)
+    public GameObject FindNearestObject(GameObject[] tagged)
     {
         GameObject nearestTarget = null;
         float minDistance = Mathf.Infinity; 

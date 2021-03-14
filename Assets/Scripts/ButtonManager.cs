@@ -9,7 +9,8 @@ public class ButtonManager : MonoBehaviour
     public GameObject button_blue;
     Rigidbody2D rigidbody2d;
     GameObject button;
-    List<GameObject> taggedObjects = new List<GameObject>(); // 초기화???
+    GameObject[] taggedObjects;
+    //List<GameObject> taggedObjects = new List<GameObject>(); // 초기화???
     GameObject target; // 버튼 생성시킬 객체선정 변수
     bool button_ON = false;
     
@@ -24,14 +25,17 @@ public class ButtonManager : MonoBehaviour
     {
         if(!button_ON) // 현재 프레임에 어떤 오브젝트에도 버튼이 떠있지 않으면
         {   
-            GameObject[] tagged = GameManager.Instance.MakeArrWithTag("Enemy");
-            for(int i = 0; i < tagged.Length; i++)
+            if(Input.GetMouseButtonDown(0))
             {
-                taggedObjects.Add(tagged[i]);
+                GameObject[] taggedObjects = GameManager.Instance.MakeArrWithTag("Enemy");
+                // for(int i = 0; i < tagged.Length; i++)
+                // {
+                //     taggedObjects.Add(tagged[i]);
+                // }
+                target = GameManager.Instance.FindNearestObject(taggedObjects);           
+                Debug.Log(target);
+                GiveButton2(target); // 해당 오브젝트에 버튼 생성 
             }
-            target = GameManager.Instance.FindNearestObject(taggedObjects);           
-            Debug.Log(target);
-            GiveButton2(target); // 해당 오브젝트에 버튼 생성                      
         }
         else // 현재 프레임에 어떤 오브젝트에 버튼이 떠있으면
         {
@@ -48,12 +52,12 @@ public class ButtonManager : MonoBehaviour
                 DeleteButton(target, 'D');
             }
         }
-        EnemyController enemyController = target.GetComponent<EnemyController>();
-        if(enemyController.health <= 0)
-        {
-            taggedObjects.Remove(target);
-            Debug.Log("suc");
-        }
+        // EnemyController enemyController = target.GetComponent<EnemyController>();
+        // if(enemyController.health <= 0)
+        // {
+        //     taggedObjects.Remove(target);
+        //     Debug.Log("suc");
+        // }
     }
     void GiveButton1()
     {
